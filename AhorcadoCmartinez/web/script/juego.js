@@ -9,7 +9,7 @@ let palabraSecreta = "";
 let letrasAdivinadas = [];
 let errores = 0;
 let intentosRestantes = 7;
-let tiempoRestante = 15;
+let tiempoRestante = 30;
 let intervalo;
 let juegoPausado = false;
 
@@ -23,7 +23,7 @@ function iniciarJuego() {
 
     errores = 0;
     intentosRestantes = 7;
-    tiempoRestante = 15;
+    tiempoRestante = 30;
     juegoPausado = false;
 
     document.getElementById("imagenAhorcado").src = "img/ahorcado0.png";
