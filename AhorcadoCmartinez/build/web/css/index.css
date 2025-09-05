@@ -1,0 +1,163 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 4/09/2025, 18:08:43
+    Author     : danny
+*/
+
+/* ==== Reset básico ==== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==== Fondo y body ==== */
+body {
+    background: linear-gradient(135deg, #f4e1f2, #e6f0fa);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ==== Navbar ==== */
+nav {
+    background: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+nav .titulo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #a43ccf;
+    text-decoration: none;
+}
+
+nav .links a {
+    margin-left: 20px;
+    color: #444;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav .links a:hover {
+    color: #a43ccf;
+}
+
+/* ==== Contenedor principal ==== */
+.login-contendor {
+    background: #fff;
+    width: 400px;
+    max-width: 90%;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+/* ==== Tabs ==== */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.tabs button.activo {
+    background: #a43ccf;
+    color: #fff;
+}
+
+.tabs button:hover {
+    background: #c577f2;
+    color: #fff;
+}
+
+/* ==== Títulos ==== */
+h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.subtitulo {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* ==== Formulario ==== */
+.formulario {
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario input {
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.formulario input:focus {
+    border-color: #a43ccf;
+    box-shadow: 0 0 6px rgba(164, 60, 207, 0.4);
+}
+
+/* ==== Botón principal ==== */
+.boton-brillante {
+    background: #a43ccf;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.boton-brillante:hover {
+    background: #8a2bb8;
+    transform: scale(1.05);
+}
+
+/* ==== Extras ==== */
+.extras {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.extras a {
+    color: #a43ccf;
+    text-decoration: none;
+}
+
+.extras a:hover {
+    text-decoration: underline;
+}

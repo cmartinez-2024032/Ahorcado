@@ -1,30 +1,41 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%-- 
+    Document   : index
+    Created on : 22 jul 2025, 10:17:36
+    Author     : informatica
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego del Ahorcado</title>
-    <link rel="stylesheet" href="css/estilo.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahorcado Cristopher Martinez | Inicio de Sesión</title>
+    <link rel="stylesheet" href="css/index.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Juego del Ahorcado</h1>
-        <div class="ahorcado">
-            <img id="imagenAhorcado" src="img/ahorcado0.png" alt="Ahorcado">
-        </div>
-        <div class="palabra" id="palabra"></div>
-        <div class="pistas" id="pistas"></div>
-        <div class="teclado" id="teclado"></div>
-        <div class="mensaje" id="mensaje"></div>
-        <div class="cronometro" id="cronometro">15</div>
-        <div class="controles">
-            <button id="inicio" onclick="iniciarJuego()">Inicio</button>
-            <button id="reiniciar" onclick="reiniciarJuego()">Reiniciar</button>
-            <button id="pausa" onclick="pausarJuego()">Pausa</button>
-        </div>
-    </div>
 
-    <script src="${pageContext.request.contextPath}/script/juego.js"></script>
+<body>
+    <nav>
+        <a href="index.jsp" class="titulo">Ahorcado</a>
+    </nav>
+
+    <div class="login-contendor">
+        <h2>Bienvenido</h2>
+        <p>Ahorcado Cristopher Martinez</p>
+        <p class="subtitulo">Ingresa tus datos para iniciar sesión</p>
+
+        <!-- Formulario de login -->
+        <form action="Validar" method="POST" class="formulario">
+            <input type="text" name="txtCorreo" placeholder="Usuario" required />
+            <input type="password" name="txtContrasena" placeholder="Contraseña" required />
+            <button type="submit" name="btnIngresar" value="Ingresar" class="boton-brillante">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <% if (request.getAttribute("error") != null) { %>
+            <p style="color:red; margin-top:10px;"><%= request.getAttribute("error") %></p>
+        <% } %>
+    </div>
 </body>
 </html>
