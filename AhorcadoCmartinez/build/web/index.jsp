@@ -24,7 +24,6 @@
         <p>Ahorcado Cristopher Martinez</p>
         <p class="subtitulo">Ingresa tus datos para iniciar sesión</p>
 
-        <!-- Formulario de login -->
         <form action="Validar" method="POST" class="formulario">
             <input type="text" name="txtCorreo" placeholder="Usuario" required />
             <input type="password" name="txtContrasena" placeholder="Contraseña" required />

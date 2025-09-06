@@ -1,112 +1,132 @@
-const palabras = [
-    { palabra: "PROGRAMACION", pistas: ["Se usa para crear software", "Requiere lógica", "Lenguajes como Java o Python"] },
-    { palabra: "DESARROLLO", pistas: ["Proceso de crear aplicaciones", "Incluye diseño y codificación", "Puede ser web o móvil"] },
-    { palabra: "ALGORITMO", pistas: ["Conjunto de pasos para resolver un problema", "Se usa en informática", "Puede ser eficiente o ineficiente"] },
-    { palabra: "COMPUTADORA", pistas: ["Dispositivo electrónico", "Procesa datos", "Tiene hardware y software"] }
-];
+function AhorcadoDivertido() {  
+    let currentWord = palabraSession ? palabraSession.toUpperCase() : "";
+    let currentHints = [
+        pistaSession1 || "Sin pista",
+        pistaSession2 || "Sin pista",
+        pistaSession3 || "Sin pista"
+    ];
 
-let palabraSecreta = "";
-let letrasAdivinadas = [];
-let errores = 0;
-let intentosRestantes = 7;
-let tiempoRestante = 30;
-let intervalo;
-let juegoPausado = false;
+    let guessedWord = [];
+    let attemptsLeft = 7;
+    let wrongGuesses = 0;
+    let gameActive = false;
+    let timer = 30;
+    let timerInterval = null;
 
-function iniciarJuego() {
-    const palabraObj = palabras[Math.floor(Math.random() * palabras.length)];
-    palabraSecreta = palabraObj.palabra;
-    letrasAdivinadas = [];
-    for (let i = 0; i < palabraSecreta.length; i++) {
-        letrasAdivinadas.push("_");
+    const elements = {
+        startBtn: document.getElementById('inicio'),
+        pauseBtn: document.getElementById('pausa'),
+        restartBtn: document.getElementById('reiniciar'),
+        nextWordBtn: document.getElementById('siguiente'),
+        wordContainer: document.getElementById('palabra'),
+        hintContainer: document.getElementById('pistas'),
+        timerDisplay: document.getElementById('cronometro'),
+        hangmanImage: document.getElementById('imagenAhorcado'),
+        gameMessage: document.getElementById('mensaje')
+    };
+
+    function initGame() {
+        guessedWord = new Array(currentWord.length).fill('_');
+        attemptsLeft = 7;
+        wrongGuesses = 0;
+        gameActive = false;
+        timer = 30;
+        elements.hangmanImage.src = "img/ahorcado0.png";
+        displayHints();
+        updateDisplay();
+        elements.gameMessage.textContent = "¡Presiona INICIO para comenzar!";
     }
 
-    errores = 0;
-    intentosRestantes = 7;
-    tiempoRestante = 30;
-    juegoPausado = false;
-
-    document.getElementById("imagenAhorcado").src = "img/ahorcado0.png";
-    document.getElementById("palabra").textContent = letrasAdivinadas.join(" ");
-    document.getElementById("pistas").innerHTML = "1. " + palabraObj.pistas[0] + "<br>2. " + palabraObj.pistas[1] + "<br>3. " + palabraObj.pistas[2];
-    document.getElementById("mensaje").textContent = "";
-    document.getElementById("cronometro").textContent = tiempoRestante;
-
-    document.getElementById("teclado").style.display = "none";
-
-    clearInterval(intervalo);
-    intervalo = setInterval(actualizarCronometro, 1000);
-}
-
-// Detectar letras del teclado físico
-window.addEventListener("keydown", function(event) {
-    if (!juegoPausado) {
-        let letra = event.key.toUpperCase();
-        if (letra.length === 1 && letra >= "A" && letra <= "Z") {
-            adivinarLetra(letra);
-        }
-    }
-});
-
-function adivinarLetra(letra) {
-    let acerto = false;
-    for (let i = 0; i < palabraSecreta.length; i++) {
-        if (palabraSecreta[i] === letra) {
-            letrasAdivinadas[i] = letra;
-            acerto = true;
-        }
+    function displayHints() {
+        elements.hintContainer.innerHTML = currentHints.map(p => `<p>${p}</p>`).join('');
     }
 
-    if (!acerto) {
-        errores++;
-        intentosRestantes--;
-        document.getElementById("imagenAhorcado").src = "img/ahorcado" + errores + ".png";
-        if (intentosRestantes <= 0) {
-            document.getElementById("mensaje").textContent = "¡Perdiste! La palabra era: " + palabraSecreta + ". Reiniciando...";
-            setTimeout(iniciarJuego, 2000);
+    function startGame() {
+        if (!currentWord) {
+            window.location.href = 'PalabraAleatoria';
             return;
         }
-    }
-
-    document.getElementById("palabra").textContent = letrasAdivinadas.join(" ");
-
-    let completo = true;
-    for (let i = 0; i < letrasAdivinadas.length; i++) {
-        if (letrasAdivinadas[i] === "_") {
-            completo = false;
+        if (!gameActive) {
+            gameActive = true;
+            startTimer();
         }
     }
-    if (completo) {
-        document.getElementById("mensaje").textContent = "¡Ganaste!";
-        clearInterval(intervalo);
+
+    function pauseGame() {
+        if (!gameActive) return;
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            elements.pauseBtn.textContent = "▶ CONTINUAR";
+        } else {
+            startTimer();
+            elements.pauseBtn.textContent = "⏸ PAUSAR";
+        }
     }
-}
 
-function actualizarCronometro() {
-    if (juegoPausado) return;
-    document.getElementById("cronometro").textContent = tiempoRestante;
-    if (tiempoRestante <= 0) {
-        clearInterval(intervalo);
-        document.getElementById("mensaje").textContent = "¡Tiempo agotado! La palabra era: " + palabraSecreta + ". Reiniciando...";
-        setTimeout(iniciarJuego, 2000);
-    } else {
-        tiempoRestante--;
+    function restartGame() {
+        clearInterval(timerInterval);
+        initGame();
     }
-}
 
-function pausarJuego() {
-    juegoPausado = !juegoPausado;
-    let boton = document.getElementById("pausa");
-    if (juegoPausado) {
-        boton.textContent = "Reanudar";
-    } else {
-        boton.textContent = "Pausa";
+    function nextWord() {
+        window.location.href = 'PalabraAleatoria'; 
     }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timer--;
+            updateDisplay();
+            if (timer <= 0) endGame(false);
+        }, 1000);
+    }
+
+    function makeGuess(letter) {
+        if (!gameActive || !letter) return;
+        letter = letter.toUpperCase();
+        if (guessedWord.includes(letter)) return;
+
+        if (currentWord.includes(letter)) {
+            for (let i = 0; i < currentWord.length; i++) {
+                if (currentWord[i] === letter) guessedWord[i] = letter;
+            }
+            if (!guessedWord.includes('_')) endGame(true);
+        } else {
+            attemptsLeft--;
+            wrongGuesses++;
+            elements.hangmanImage.src = `img/ahorcado${wrongGuesses}.png`;
+            if (attemptsLeft <= 0) endGame(false);
+        }
+        updateDisplay();
+    }
+
+    function endGame(won) {
+        gameActive = false;
+        clearInterval(timerInterval);
+        elements.gameMessage.textContent = won
+            ? `Ganaste: ${currentWord}`
+            : `Perdiste. Palabra: ${currentWord}`;
+    }
+
+    function updateDisplay() {
+        elements.wordContainer.innerHTML = guessedWord.map(l => `<span class="letter-box">${l}</span>`).join('');
+        elements.timerDisplay.textContent = `Tiempo: ${timer}s | Intentos: ${attemptsLeft}`;
+    }
+
+    elements.startBtn.addEventListener('click', startGame);
+    elements.pauseBtn.addEventListener('click', pauseGame);
+    elements.restartBtn.addEventListener('click', restartGame);
+    elements.nextWordBtn.addEventListener('click', nextWord);
+
+    document.addEventListener('keypress', (e) => {
+        if (gameActive && /^[A-ZÑa-zñ]$/.test(e.key)) {
+            makeGuess(e.key);
+        }
+    });
+
+    initGame();
 }
 
-function reiniciarJuego() {
-    clearInterval(intervalo);
-    iniciarJuego();
-}
-
-window.onload = iniciarJuego;
+document.addEventListener('DOMContentLoaded', () => {
+    window.ahorcadoGame = new AhorcadoDivertido(); 
+});
